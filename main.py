@@ -67,12 +67,19 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     # skip connection to layer 4
-    output = tf.add(output, vgg_layer4_out)
+    pool4_out_scaled = tf.multiply(vgg_layer4_out, 0.01, name='pool4_out_scaled')
+    pool4_conv_1x1 = tf.layers.conv2d(pool4_out_scaled, num_classes, kernel_size=1, strides=(1, 1), padding='same',
+                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+
+    output = tf.add(output, pool4_conv_1x1)
     output = tf.layers.conv2d_transpose(output, num_classes, 4, strides=(2, 2), padding='same',
                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     # skip connection to layer 3
-    output = tf.add(output, vgg_layer3_out)
+    pool3_out_scaled = tf.multiply(vgg_layer3_out, 0.0001, name='pool3_out_scaled')
+    pool3_conv_1x1 = tf.layers.conv2d(pool3_out_scaled, num_classes, kernel_size=1, strides=(1, 1), padding='same',
+                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    output = tf.add(output, pool3_conv_1x1)
     output = tf.layers.conv2d_transpose(output, num_classes, 16, strides=(8, 8), padding='same',
                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
