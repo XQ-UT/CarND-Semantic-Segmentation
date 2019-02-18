@@ -22,6 +22,11 @@ The model is trained for 20 epochs with `learning rate = 1e-3` and
 `keep probability = 0.5`.
 
 The loss is shown as below: 
+<p align="center">
+  <img src="report_images/training_loss.png" width="1000" height="300"/>
+  <br>
+  <em>Figure 1: Training Loss</em>
+</p>
 
 
 
