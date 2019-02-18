@@ -23,7 +23,7 @@ The model is trained for 20 epochs with `learning rate = 1e-3` and
 
 The loss is shown as below: 
 <p align="center">
-  <img src="report_images/training_loss.png" width="1000" height="300"/>
+  <img src="report_images/training_loss.png" width="600" height="300"/>
   <br>
   <em>Figure 1: Training Loss</em>
 </p>
@@ -34,4 +34,15 @@ The loss is shown as below:
 The segmentation results are stored in `run` folder.
 
 Some samples are shown as below:
+<p align="center">
+  <img src="report_images/example_img_1.png" width="600" height="300"/>
+  <br>
+  <em>Figure 2: Example Image 1</em>
+</p>
+
+<p align="center">
+  <img src="report_images/example_img_2.png" width="600" height="300"/>
+  <br>
+  <em>Figure 3: Example Image 2</em>
+</p>
 
