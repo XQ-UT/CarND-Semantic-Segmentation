@@ -45,6 +45,7 @@ def load_vgg(sess, vgg_path):
 
     return image_input, keep_prob, layer3_out, layer4_out, layer7_out
 
+
 tests.test_load_vgg(load_vgg, tf)
 
 
@@ -58,7 +59,26 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :return: The Tensor for the last layer of output
     """
     # TODO: Implement function
-    return None
+
+    # 1 x 1 convolution & up sample
+    conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, kernel_size=1, strides=(1, 1), padding='same',
+                                kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    output = tf.layers.conv2d_transpose(conv_1x1, num_classes, kernel_size=4, strides=(2, 2), padding='same',
+                                        kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+
+    # skip connection to layer 4
+    output = tf.add(output, vgg_layer4_out)
+    output = tf.layers.conv2d_transpose(output, num_classes, 4, strides=(2, 2), padding='same',
+                                        kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+
+    # skip connection to layer 3
+    output = tf.add(output, vgg_layer3_out)
+    output = tf.layers.conv2d_transpose(output, num_classes, 16, strides=(8, 8), padding='same',
+                                        kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+
+    return output
+
+
 tests.test_layers(layers)
 
 
@@ -73,6 +93,8 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     """
     # TODO: Implement function
     return None, None, None
+
+
 tests.test_optimize(optimize)
 
 
@@ -93,6 +115,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     """
     # TODO: Implement function
     pass
+
+
 tests.test_train_nn(train_nn)
 
 
